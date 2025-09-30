@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  blur-app:
+    build: .
+    container_name: blur-app
+    ports:
+      - "9000:9000"
+
+     

@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Размытие лиц</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body>
+  <h1>Размытие лиц</h1>
+  <div class="row">
+    <div class="panel controls">
+      <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+        <label>Загрузите видео:</label>
+        <input type="file" name="video" accept="video/*" required>
+        <button class="btn" type="submit">Загрузить</button>
+      </form>
+
+      <label>Сила размытия:<span id="blurVal">1.0</span></label>
+      <input type="range" id="blur" min="0.4" max="6.0" value="1.0" step="0.1">
+
+      <div class="actions">
+        <button class="btn" id="btnSave" type="button">Сохранить видео</button>
+        <div id="saveStatus" class="small"></div>
+        <div id="downloadLink"></div>
+      </div>
+    </div>
+
+    <div class="panel video">
+      <canvas id="canvas"></canvas>
+    </div>
+  </div>
+
+  <script>
+    window.APP_ENDPOINTS = {
+      video_feed: "{{ url_for('videoFeed') }}",
+      set_masks:  "{{ url_for('setMasks') }}",
+      set_params: "{{ url_for('setParams') }}",
+      save_video: "{{ url_for('saveVideo') }}"
+    };
+  </script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
