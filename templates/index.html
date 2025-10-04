@@ -7,36 +7,53 @@
   <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
 </head>
 <body>
-  <h1>Размытие лиц</h1>
+  <h1>Face Blur</h1>
+  <p class="small">
+    Загрузите видео, настройте силу размытия, при необходимости включите автоматическое определение лиц,
+    выделите области для размытия, просмотрите превью и сохраните результат.
+  </p>
+
   <div class="row">
     <div class="panel controls">
-      <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
-        <label>Загрузите видео:</label>
+      <form id="uploadForm" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+        <label>Загрузите видео (mp4/mov/avi):</label>
         <input type="file" name="video" accept="video/*" required>
         <button class="btn" type="submit">Загрузить</button>
       </form>
-
-      <label>Сила размытия:<span id="blurVal">1.0</span></label>
-      <input type="range" id="blur" min="0.4" max="6.0" value="1.0" step="0.1">
-
-      <div class="actions">
-        <button class="btn" id="btnSave" type="button">Сохранить видео</button>
-        <div id="saveStatus" class="small"></div>
-        <div id="downloadLink"></div>
+      <div>
+        <label>Сила размытия: <span id="blurStrengthVal">1.0</span></label>
+        <input type="range" id="blurStrength" min="0.4" max="6.0" value="1.0" step="0.1">
       </div>
+      <div>
+        <label><input type="checkbox" id="autoFace" checked> Автоматическое определение лиц</label>
+      </div>
+
+      <div class="rowbuttons">
+        <button type="button" class="btn" id="btnPause">Пауза</button>
+        <button type="button" class="btn" id="btnResume">Продолжить</button>
+        <button type="button" class="btn" id="btnClear">Очистить маски</button>
+      </div>
+
+      <div>
+        <button type="button" class="btn" id="btnSave">Сохранить видео с размытием</button>
+        <div id="saveStatus" class="small"></div>
+      </div>
+
+      <div id="downloadLink"></div>
     </div>
 
-    <div class="panel video">
+    <div class="panel video-wrap">
       <canvas id="canvas"></canvas>
     </div>
   </div>
 
   <script>
     window.APP_ENDPOINTS = {
-      video_feed: "{{ url_for('videoFeed') }}",
-      set_masks:  "{{ url_for('setMasks') }}",
-      set_params: "{{ url_for('setParams') }}",
-      save_video: "{{ url_for('saveVideo') }}"
+      snapshot:    "{{ url_for('snapshot') }}",
+      setMasks:    "{{ url_for('setMasks') }}",
+      setParams:   "{{ url_for('setParams') }}",
+      togglePause: "{{ url_for('togglePause') }}",
+      saveVideo:   "{{ url_for('saveVideo') }}"
     };
   </script>
   <script src="{{ url_for('static', filename='app.js') }}"></script>

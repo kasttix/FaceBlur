@@ -19,6 +19,4 @@ RUN pip install --no-cache-dir \
 RUN mkdir -p /app/uploads /app/exports
 
 EXPOSE 9000
-
-# просто запустим flask-приложение
 CMD ["python", "app.py"]
